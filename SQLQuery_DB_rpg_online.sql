@@ -199,3 +199,97 @@ ALTER TABLE juego.tiendas_items
 	ALTER COLUMN precio INT NOT NULL
 
 
+--Modificacion en la tabla Personajes: se elimnan las columnas que tienen datos referidos a estadísticas.
+ALTER TABLE usuario.personajes DROP COLUMN vida
+
+ALTER TABLE usuario.personajes DROP COLUMN mana
+
+ALTER TABLE usuario.personajes DROP COLUMN nivel
+
+ALTER TABLE usuario.personajes DROP COLUMN experiencia
+
+ALTER TABLE usuario.personajes DROP COLUMN fuerza
+
+ALTER TABLE usuario.personajes DROP COLUMN agilidad
+
+ALTER TABLE usuario.personajes DROP COLUMN magia
+	
+
+--Modificacion en la tabla Items: se eliminan las columnas que contienen datos referidos a estadísticas.
+ALTER TABLE objeto.items DROP COLUMN fuerza
+
+ALTER TABLE objeto.items DROP COLUMN agilidad
+
+ALTER TABLE objeto.items DROP COLUMN magia
+
+ALTER TABLE objeto.items DROP COLUMN req_fuerza
+
+ALTER TABLE objeto.items DROP COLUMN req_agilidad
+
+ALTER TABLE objeto.items DROP COLUMN req_magia
+
+ALTER TABLE objeto.items DROP COLUMN req_clase
+
+ALTER TABLE objeto.items DROP COLUMN req_nivel
+
+ALTER TABLE objeto.items DROP COLUMN poder_defensa
+
+ALTER TABLE objeto.items DROP COLUMN poder_ataque
+
+ALTER TABLE objeto.items DROP COLUMN poder_magico
+
+
+--Modificacion en la tabla Npcs: se eliminan las columnas que contienen datos referidos a estadísticas.
+ALTER TABLE juego.npcs DROP COLUMN vida
+
+ALTER TABLE juego.npcs DROP COLUMN nivel
+
+ALTER TABLE juego.npcs DROP COLUMN experiencia
+
+ALTER TABLE juego.npcs DROP COLUMN fuerza
+
+ALTER TABLE juego.npcs DROP COLUMN agilidad
+
+ALTER TABLE juego.npcs DROP COLUMN magia
+
+
+--Se crea tabla ESTADÍSTICAS
+CREATE TABLE juego.estadisticas(
+	id_estadistica INT IDENTITY,
+	nombre VARCHAR(50) NOT NULL,
+	descripcion VARCHAR(200) NOT NULL,
+
+	CONSTRAINT PK_estadisticas PRIMARY KEY (id_estadistica),
+	CONSTRAINT UQ_estadisticas_nombre UNIQUE (nombre)
+)
+
+--Se crea tabla intermedia entre personajes y estadísticas
+CREATE TABLE juego.personajes_estadisticas(
+	id_usuario INT,
+	id_personaje INT,
+	id_estadistica INT,
+
+	CONSTRAINT PK_personajes_estadisticas PRIMARY KEY (id_usuario,id_personaje,id_estadistica),
+	CONSTRAINT FK_personajes_estadisticas_personajes FOREIGN KEY (id_usuario,id_personaje) REFERENCES usuario.personajes(id_usuario,id_personaje),
+	CONSTRAINT FK_personajes_estadisticas_estadisticas FOREIGN KEY (id_estadistica) REFERENCES juego.estadisticas(id_estadistica)
+)
+
+--Se crea tabla intermedia entre items y estadísticas
+CREATE TABLE juego.items_estadisticas(
+	id_item INT,
+	id_estadistica INT,
+
+	CONSTRAINT PK_items_estadisticas PRIMARY KEY (id_item,id_estadistica),
+	CONSTRAINT FK_items_estadisticas_items FOREIGN KEY (id_item) REFERENCES objeto.items(id_item),
+	CONSTRAINT FK_items_estadisticas_estadisticas FOREIGN KEY (id_estadistica) REFERENCES juego.estadisticas(id_estadistica)
+)
+
+--Se crea tabla intermedia entre npcs y estadísticas
+CREATE TABLE juego.npcs_estadisticas(
+	id_npc INT,
+	id_estadistica INT,
+
+	CONSTRAINT PK_npcs_estadisticas PRIMARY KEY (id_npc,id_estadistica),
+	CONSTRAINT FK_npcs_estadisticas_npcs FOREIGN KEY (id_npc) REFERENCES juego.npcs(id_npc),
+	CONSTRAINT FK_npcs_estadisticas_estadisticas FOREIGN KEY (id_estadistica) REFERENCES juego.estadisticas(id_estadistica)
+)
