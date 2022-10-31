@@ -16,8 +16,8 @@ GO
 CREATE TABLE juego.mapas(
 	id_mapa INT IDENTITY NOT NULL,
 	nombre_mapa VARCHAR(20) NOT NULL,
-	tamaño_x INT NOT NULL,
-	tamaño_y INT NOT NULL,
+	tamaÃ±o_x INT NOT NULL,
+	tamaÃ±o_y INT NOT NULL,
 
 	CONSTRAINT PK_mapas PRIMARY KEY (id_mapa)
 )
@@ -180,5 +180,22 @@ CREATE TABLE juego.inventarios_items(
 )
 GO
 
+ALTER TABLE juego.clases 
+	ADD CONSTRAINT UQ_clases_nombre_clase UNIQUE (nombre_clase)
+
+ALTER TABLE juego.mapas
+	ADD CONSTRAINT UQ_mapas_nombe_mapa UNIQUE (nombre_mapa)
+
+ALTER TABLE juego.npcs_tipos
+	ADD CONSTRAINT UQ_npcs_tipos_nombre_tipo UNIQUE (nombre_tipo)
+
+ALTER TABLE objeto.items
+	ADD CONSTRAINT UQ_items_nombre UNIQUE (nombre)
+
+ALTER TABLE objeto.categorias
+	ADD CONSTRAINT UQ_categorias_titulo_categoria UNIQUE (titulo_categoria)
+
+ALTER TABLE juego.tiendas_items
+	ALTER COLUMN precio INT NOT NULL
 
 
